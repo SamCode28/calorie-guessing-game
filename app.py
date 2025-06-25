@@ -8,6 +8,10 @@ app = Flask(__name__)
 consumer_key = 'your_key'
 consumer_secret = 'your_secret'
 
+@app.route("/about")
+def about():
+    return "About page"
+
 @app.route('/api/search-food')
 def search_food():
     query = request.args.get('query', '')
