@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from requests_oauthlib import OAuth1Session
 import os
 
@@ -7,6 +7,10 @@ app = Flask(__name__)
 # Replace with your FatSecret credentials
 consumer_key = 'your_key'
 consumer_secret = 'your_secret'
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 @app.route("/about")
 def about():
