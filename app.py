@@ -31,10 +31,9 @@ def get_token():
     )
 
     if response.status_code == 200:
-        global access_token
-        access_token = response.json()
+        global token_found
+        token_found = response.json()
         print("Found token")
-        return jsonify(access_token)
     else:
         return jsonify({'error': 'Failed to get token', 'details': response.text}), response.status_code
     
@@ -54,7 +53,8 @@ def get_food():
     response = requests.post(token_url, headers=headers, json=payload)
 
     if response.status_code == 200:
-        return response.json()
+        data_found = response.json()
+        return jsonify(data_found)
     else:
         print('Error:', response.status_code, response.text)
         return None
