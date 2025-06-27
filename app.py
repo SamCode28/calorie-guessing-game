@@ -1,20 +1,42 @@
 from flask import Flask, request, jsonify, render_template
 from requests_oauthlib import OAuth1Session
 import os
+import requests
 
 app = Flask(__name__)
 
-# Replace with your FatSecret credentials
-consumer_key = 'your_key'
-consumer_secret = 'your_secret'
+#Credentials
+client_id = os.getenv('CLIENT_ID')
+client_secret = os.getenv('CLIENT_SECRET')
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
 @app.route("/about")
-def about():
-    return "About page"
+def test_func():
+    return render_template("index.html")
+
+@app.route('/get-token')
+def get_token():
+    token_url = 'https://oauth.fatsecret.com/connect/token'
+    data = {
+        'grant_type': 'client_credentials',
+        'client_id': client_id,
+        'client_secret': client_secret,
+        'scope' : 'premier'
+    }
+
+    response = requests.post(token_url, data=data)
+
+    if response.status_code == 200:
+        token_info = response.json()
+        return jsonify(token_info)
+    else:
+        return jsonify({'error': 'Failed to get token', 'details': response.text}), response.status_code
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 @app.route('/api/search-food')
 def search_food():
