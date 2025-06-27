@@ -24,7 +24,7 @@ def get_token():
         'grant_type': 'client_credentials',
         'client_id': client_id,
         'client_secret': client_secret,
-        'scope' : 'premier'
+        'scope' : 'premiere'
     }
 
     response = requests.post(token_url, data=data)
