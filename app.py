@@ -33,26 +33,23 @@ def get_token():
 
     if response.status_code == 200:
         token_found = response.json()
-        print("Found token")
-        print(token_found.get("access_token"))
     else:
         return jsonify({'error': 'Failed to get token', 'details': response.text}), response.status_code
     
-@app.route('/get-food', methods=['POST'])
+@app.route('/get-food', methods=['GET'])
 def get_food():
-    print(token_found.get("access_token"))
-    token_url = 'https://platform.fatsecret.com/rest/server.api'
+    token_url = "https://platform.fatsecret.com/rest/foods/search/v3"
     headers = {
         'Content-Type': 'application/json',
-        'Authorization' : f"Bearer {token_found.get("access_token")}"
+        'Authorization': token_found.get("access_token")
     }
     payload = {
-        'method' : 'food.search',
-        'search_expression' : "toast",
+        'method' : "foods.search.v3",
+        'search_expression' : "apple",
         'format' : "json"
     }
 
-    response = requests.post(token_url, headers=headers, json=payload)
+    response = requests.get(token_url, headers=headers, json=payload)
 
     if response.status_code == 200:
         data_found = response.json()
