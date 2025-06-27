@@ -13,14 +13,13 @@ document.getElementById('play-game-2').addEventListener('click', () => {
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({ search_expression: 'toast' })
-})
-.then(response => response.json())
-.then(data => {
-  console.log('Search results:', data);
-})
-.catch(error => {
-  console.error('API error:', error);
-});
-
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Search results:', data);
+  })
+  .catch(error => {
+    console.error('API error:', error);
+  });
 });
 

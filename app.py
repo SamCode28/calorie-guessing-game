@@ -18,6 +18,7 @@ def index():
 
 @app.route('/get-token', methods=['POST'])
 def get_token():
+    global token_found
     token_url = 'https://oauth.fatsecret.com/connect/token'
     data = {
         'grant_type': 'client_credentials',
@@ -31,14 +32,15 @@ def get_token():
     )
 
     if response.status_code == 200:
-        global token_found
         token_found = response.json()
         print("Found token")
+        print(token_found.get("access_token"))
     else:
         return jsonify({'error': 'Failed to get token', 'details': response.text}), response.status_code
     
 @app.route('/get-food', methods=['POST'])
 def get_food():
+    print(token_found.get("access_token"))
     token_url = 'https://platform.fatsecret.com/rest/server.api'
     headers = {
         'Content-Type': 'application/json',
