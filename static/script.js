@@ -4,9 +4,23 @@ document.getElementById('play-game-1').addEventListener('click', () => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action: 'generate_token' })
   })
-  .then(res => res.json())
-  .then(data => {
-    console.log('Response:', data);
-    // Update the DOM here
-  });
 });
+
+document.getElementById('play-game-2').addEventListener('click', () => {
+  fetch('/get-food', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ search_expression: 'toast' })
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Search results:', data);
+})
+.catch(error => {
+  console.error('API error:', error);
+});
+
+});
+
