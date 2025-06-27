@@ -9,6 +9,8 @@ app = Flask(__name__)
 client_id = os.getenv('CLIENT_ID')
 client_secret = os.getenv('CLIENT_SECRET')
 
+access_token = ""
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -32,8 +34,8 @@ def get_token():
     )
 
     if response.status_code == 200:
-        token_info = response.json()
-        return jsonify(token_info)
+        global access_token
+        access_token = response.json()
     else:
         return jsonify({'error': 'Failed to get token', 'details': response.text}), response.status_code
 
