@@ -51,7 +51,7 @@ def get_food():
 
     }
 
-    response = requests.post(token_url, headers=headers, json=payload)
+    response = requests.get(token_url, headers=headers, params=payload)
     print(response.json())
 
     try:
