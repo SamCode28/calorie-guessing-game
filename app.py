@@ -48,10 +48,11 @@ def get_food():
         'method' : 'foods.search.v3',
         'search_expression' : "apple",
         'format' : "json"
-        
+
     }
 
     response = requests.post(token_url, headers=headers, json=payload)
+    print(response.json())
 
     try:
         return jsonify(response.json(), response.status_code)
