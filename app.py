@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, Response
 import os
 import requests
 from requests.auth import HTTPBasicAuth
@@ -33,30 +33,29 @@ def get_token():
 
     if response.status_code == 200:
         token_found = response.json()
+        return Response(status=204)
     else:
         return jsonify({'error': 'Failed to get token', 'details': response.text}), response.status_code
     
-@app.route('/get-food', methods=['GET'])
+@app.route('/get-food', methods=['POST'])
 def get_food():
     token_url = "https://platform.fatsecret.com/rest/foods/search/v3"
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': token_found.get("access_token")
+        'Authorization': f"Bearer {token_found.get("access_token")}"
     }
     payload = {
-        'method' : "foods.search.v3",
+        'method' : 'foods.search',
         'search_expression' : "apple",
         'format' : "json"
     }
 
-    response = requests.get(token_url, headers=headers, json=payload)
+    response = requests.post(token_url, headers=headers, json=payload)
 
-    if response.status_code == 200:
-        data_found = response.json()
-        return jsonify(data_found)
-    else:
-        print('Error:', response.status_code, response.text)
-        return None
+    try:
+        return jsonify(response.json(), response.status_code)
+    except ValueError:
+        return jsonify({'error': 'Invalid JSON from FatSecret', 'raw': response.text}), 502
 
 
 if __name__ == '__main__':

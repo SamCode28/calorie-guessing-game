@@ -8,7 +8,7 @@ document.getElementById('play-game-1').addEventListener('click', () => {
 
 document.getElementById('play-game-2').addEventListener('click', () => {
   fetch('/get-food', {
-  method: 'GET',
+  method: 'POST',
   headers: {
     'Content-Type': 'application/json'
   },
