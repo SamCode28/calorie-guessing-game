@@ -39,7 +39,7 @@ def get_token():
     
 @app.route('/get-food', methods=['POST'])
 def get_food():
-    token_url = "https://platform.fatsecret.com/rest/foods/search/v3"
+    token_url = "https://platform.fatsecret.com/rest/server.api"
     headers = {
         'Content-Type': 'application/json',
         'Authorization': f"Bearer {token_found.get("access_token")}"
