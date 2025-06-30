@@ -37,17 +37,18 @@ def get_token():
     else:
         return jsonify({'error': 'Failed to get token', 'details': response.text}), response.status_code
     
-@app.route('/get-food', methods=['POST'])
+@app.route('/get-food', methods=['GET'])
 def get_food():
-    token_url = "https://platform.fatsecret.com/rest/server.api"
+    token_url = 'https://platform.fatsecret.com/rest/foods/search/v3'
     headers = {
         'Content-Type': 'application/json',
         'Authorization': f"Bearer {token_found.get("access_token")}"
     }
     payload = {
-        'method' : 'foods.search',
+        'method' : 'foods.search.v3',
         'search_expression' : "apple",
         'format' : "json"
+        
     }
 
     response = requests.post(token_url, headers=headers, json=payload)
