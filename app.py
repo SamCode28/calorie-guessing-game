@@ -57,10 +57,9 @@ def get_food():
 
     random_valid_food_dict_key = random.randint(0,len(response['foods_search']['results']['food']))
 
-    print(f"Food ID for #{random_valid_food_dict_key}: {response['foods_search']['results']['food'][random_valid_food_dict_key]['food_id']}")
 
     try:
-        return jsonify(response.json)
+        return (f"Food ID for #{random_valid_food_dict_key}: {response['foods_search']['results']['food'][random_valid_food_dict_key]['food_id']}")
     except ValueError:
         return jsonify({'error': 'Invalid JSON from FatSecret', 'raw': response.text}), 502
     

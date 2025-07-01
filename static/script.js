@@ -1,21 +1,17 @@
+fatSecretHeader = new Headers();
+fatSecretHeader.append("Content-Type", "application/json")
+
 document.getElementById('play-game-1').addEventListener('click', () => {
-  fetch('/get-token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'generate_token' })
-  })
+  fetch('/get-token', {method: 'POST',})
 });
+
 
 document.getElementById('play-game-2').addEventListener('click', () => {
   fetch('/get-food', {
   method: 'GET',
-  headers: {
-    'Content-Type': 'application/json'
-  }})
-  .then(response => response.json())
-  .then(data => {
-    console.log('Search results:', data);
-  })
+  headers: fatSecretHeader})
+  .then(response => response.text())
+  .then(response_text => document.getElementById('play-game-1').innerText=response_text)
   .catch(error => {
     console.error('API error:', error);
   });
