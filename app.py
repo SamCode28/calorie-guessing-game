@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template, Response
 import os
 import requests
+import random
 from requests.auth import HTTPBasicAuth
 
 app = Flask(__name__)
@@ -54,10 +55,12 @@ def get_food():
     response = requests.get(token_url, headers=headers, params=payload)
     response = response.json()
 
-    print(f"Result #3: {response['foods_search']['results']['food'][3]}")
+    random_valid_food_dict_key = random.randint(0,len(response['foods_search']['results']['food']))
+
+    print(f"Food ID for #{random_valid_food_dict_key}: {response['foods_search']['results']['food'][random_valid_food_dict_key]['food_id']}")
 
     try:
-        return jsonify(response, response.status_code)
+        return jsonify(response.json)
     except ValueError:
         return jsonify({'error': 'Invalid JSON from FatSecret', 'raw': response.text}), 502
     
