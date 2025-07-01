@@ -52,12 +52,16 @@ def get_food():
     }
 
     response = requests.get(token_url, headers=headers, params=payload)
-    print(response.json())
+    response = response.json()
+
+    print(f"Result #3: {response['foods_search']['results']['food'][3]}")
 
     try:
-        return jsonify(response.json(), response.status_code)
+        return jsonify(response, response.status_code)
     except ValueError:
         return jsonify({'error': 'Invalid JSON from FatSecret', 'raw': response.text}), 502
+    
+
 
 
 if __name__ == '__main__':
