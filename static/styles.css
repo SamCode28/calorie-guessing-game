@@ -69,3 +69,8 @@ footer{
 h1{
     font-size: 3rem;
 }
+
+.image-class{
+    width: 100px;
+    height: 100px;
+}

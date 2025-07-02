@@ -1,12 +1,14 @@
-document.getElementById('play-game-1').addEventListener('click', () => {
-  fetch('/get-token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'generate_token' })
-  })
-  .then(res => res.json())
-  .then(data => {
-    console.log('Response:', data);
-    // Update the DOM here
+fatSecretHeader = new Headers();
+fatSecretHeader.append("Content-Type", "application/json")
+
+document.getElementById('play-game-2').addEventListener('click', () => {
+  fetch('/get-food', {
+  method: 'GET',
+  headers: fatSecretHeader})
+  .then(response => response.text())
+  .then(response_text => document.getElementById('src-container').setAttribute("src",response_text))
+  .catch(error => {
+    console.error('API error:', error);
   });
 });
+
