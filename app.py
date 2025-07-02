@@ -14,11 +14,7 @@ token_found = None
 
 @app.route("/")
 def index():
-    return render_template("index.html")
-
-
-@app.route('/get-token', methods=['POST'])
-def get_token():
+    #Find and store token
     global token_found
     token_url = 'https://oauth.fatsecret.com/connect/token'
     data = {
@@ -34,9 +30,12 @@ def get_token():
 
     if response.status_code == 200:
         token_found = response.json()
-        return Response(status=204)
+        #Load HTML, CSS, JS
+        return render_template("index.html")
+    
     else:
-        return jsonify({'error': 'Failed to get token', 'details': response.text}), response.status_code
+        return f'Error: Failed to get token. Status Code: {response.status_code}' 
+            
     
 @app.route('/get-food', methods=['GET'])
 def get_food():
@@ -48,8 +47,8 @@ def get_food():
     payload = {
         'method' : 'foods.search.v3',
         'search_expression' : "apple",
+        'include_food_images' : True,
         'format' : "json"
-
     }
 
     response = requests.get(token_url, headers=headers, params=payload)
@@ -57,15 +56,12 @@ def get_food():
 
     random_valid_food_dict_key = random.randint(0,len(response['foods_search']['results']['food']))
 
-
     try:
-        return (f"Food ID for #{random_valid_food_dict_key}: {response['foods_search']['results']['food'][random_valid_food_dict_key]['food_id']}")
+        return response['foods_search']['results']['food'][0]['food_images']['food_image'][0]['image_url']
     except ValueError:
         return jsonify({'error': 'Invalid JSON from FatSecret', 'raw': response.text}), 502
     
 
-
-
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(debug=True, host="0.0.0.0", port=port)
