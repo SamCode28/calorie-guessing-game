@@ -7,24 +7,50 @@
     <title>Calorie Guessing Game</title>
 </head>
 <body>
-    <header>
-        <h1>The Calorie Guessing Game</h1>
+    <div class="background-img"></div>
+    <header class="test">
+        <h1>Calorie Guessing Game</h1>
     </header>
-    <container class="main-menu">
-        <ul class="main-menu-list">
-            <li class="main-menu-list-item"><span id="play-game-1" class="clickable">Guess Calorie Game</span></li>
-            <li class="main-menu-list-item"><span id="play-game-2" class="clickable">Guess Lower Calorie Food Game</span></li>
-            <li class="main-menu-list-item"><span class="clickable">How To Play</span></li>
-            <li class="main-menu-list-item"><span class="clickable">Leaderboard</span></li>
+    <div id="main-menu-container">
+        <!--Main Menu List-->
+        <!--Main Menu List-->
+        <ul id="main-menu" class="main-menu-list">
+            <li class="main-menu-list-item"><button type="button" class="btn" id="play-game-1">Guess Calorie Game</span></li>
+            <li class="main-menu-list-item"><button type="button" class="btn" id="play-game-2">Guess Lower Calorie Food Game</span></li>
+            <li class="main-menu-list-item"><button type="button" class="btn">How To Play</span></li>
+            <li class="main-menu-list-item"><button type="button" class="btn">Leaderboard</span></li>
         </ul>
-    </container>
-    <img class="image-class" id="src-container">
-    <footer>
+    </div>
+
+    <!--Guess Calorie Game-->
+    <!--Guess Calorie Game-->
+    <div id="game-grid-container" class="game-grid hidden">
+        <div id="card-1" class="food-card">
+            <div class="img-div">
+                <img id="img-container-1" src="" class="food-img" alt="...">
+            </div>
+            <div class="food-text">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+            </div>
+        </div>
+        <div id="card-2" class="food-card">
+            <div class="img-div">
+                <img id="img-container-2" src="" class="food-img" alt="...">
+            </div>
+            <div class="food-text">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="test">
         <a href="https://www.fatsecret.com">
-            <img src="https://platform.fatsecret.com/api/static/images/powered_by_fatsecret.png" srcset="https://platform.fatsecret.com/api/static/images/powered_by_fatsecret_2x.png 2x, https://platform.fatsecret.com/api/static/images/powered_by_fatsecret_3x.png 3x" border="0"/>
+            <img src="https://platform.fatsecret.com/api/static/images/powered_by_fatsecret.png" srcset="https://platform.fatsecret.com/api/static/images/powered_by_fatsecret_2x.png 2x, https://platform.fatsecret.com/api/static/images/powered_by_fatsecret_3x.png 3x"/>
         </a>
     </footer>
-
+    
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 
