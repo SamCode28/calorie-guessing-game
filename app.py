@@ -48,6 +48,7 @@ def get_food():
         'method' : 'foods.search.v3',
         'search_expression' : "apple",
         'include_food_images' : True,
+        'flag_default_serving' : True,
         'format' : "json"
     }
 
@@ -56,12 +57,33 @@ def get_food():
 
     random_valid_food_dict_key = random.randint(0,len(response['foods_search']['results']['food']))
 
+    print(f'key: {random_valid_food_dict_key}')
+
+    attempts = len(response['foods_search']['results']['food'])
+
+    while(attempts > 1):
+        random_valid_food_dict_key = random.randint(0,len(response['foods_search']['results']['food']) - 1)
+        try:
+            if(response['foods_search']['results']['food'][random_valid_food_dict_key]['food_images']):
+                print('Link found')
+                print(f'Calories: {response['foods_search']['results']['food'][random_valid_food_dict_key]['servings']['serving'][0]['calories']}')
+                break
+        except KeyError:
+            print('No link found')
+            print(f"except #: {random_valid_food_dict_key}")
+            attempts -= 1
+
     try:
-        return response['foods_search']['results']['food'][0]['food_images']['food_image'][0]['image_url']
-    except ValueError:
+        return response['foods_search']['results']['food'][random_valid_food_dict_key]['food_images']['food_image'][0]['image_url']
+    except KeyError:
         return jsonify({'error': 'Invalid JSON from FatSecret', 'raw': response.text}), 502
     
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(debug=True, host="0.0.0.0", port=port)
+
+
+#curl -X 'GET' \
+#  'https://api.nal.usda.gov/fdc/v1/food/2262074?format=abridged&nutrients=957&nutrients=203&nutrients=204&nutrients=205' \
+#  -H 'accept: application/json'

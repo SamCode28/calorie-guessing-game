@@ -7,11 +7,11 @@ document.getElementById('play-game-1').addEventListener('click', () => {
   headers: fatSecretHeader})
   .then(response => response.text())
   .then(response_text =>{
-    document.getElementById('img-container-1').setAttribute("src",response_text)
-    document.getElementById('img-container-2').setAttribute("src",response_text)
+    console.log(response_text)
     hideClass('main-menu-container')
-    removeHideClass("game-grid-container")
-    //removeHideClass('card-2')
+    removeHideClass("single-food-game-grid-container")
+    document.getElementById('img-container-1').setAttribute("src",response_text)
+
   })
   .catch(error => {
     console.error('API error:', error);
