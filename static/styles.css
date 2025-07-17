@@ -1,76 +1,138 @@
 * {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    text-align: center;
     box-sizing: border-box;
     font-family: 'roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.test{
+    display: contents;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.header-title{
+    background-color: rgba(200, 255, 200, 0.5);
+    font-size: clamp(5vw, 150%, 10vw);
 }
 
 html,body{
     width: 100vw;
     height: 100vh;
-}
-
-header{
-    padding-top: 4rem;
-    display: flex;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    justify-items: center;
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: hidden;
 }
 
 body{
-    display: flex;
+    display: grid;
     align-items: center;
-    justify-content: space-between;
-    flex-direction: column;
-}
-
-footer{
-    padding-bottom: 4rem;
-}
-
-.main-menu{
-    display: flex;
-    flex-direction: column;
-    border-color: black;
-    align-items: center;
-    justify-items: center;
-    align-content: center;
-    justify-content: center;
+    text-align: center;
+    padding: 0 1rem 0 1rem
 }
 
 .main-menu-list{
+    display: flex;
+    flex-direction: column;
     list-style-type: none;
+    justify-content: space-evenly;
+    height: 100%;
 }
 
-.main-menu-list-item{
-    padding: 1rem;
+.main-menu-container-class{
+    display: contents;
+}
+
+.single-food-game-grid{
+    display: grid;
+    row-gap: .5rem;
+    height: 100%;
+    font-size: clamp(2vw, 150%, 6vw);
+}
+
+.button-container{
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.food-card{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+    justify-items: stretch;
+    width: 100%;
+}
+
+.text-background{
+    background-color: rgba(200, 255, 200, 0.75);
+}
+
+.text-background:not(:first-child){
+    font-weight: 400;
+}
+
+img.food-img{
+    object-fit: contain;
+    max-height: 45vh;
+}
+
+.background-img{
+    top: 0;
+    left: 0;
+    background-image: url("./images/dose-juice-lg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: .55;
+    z-index: -1;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+
+@media (max-width: 768px) {
+  body.background-img {
+    background-image: url("./images/dose-juice-md.jpg");
+  }
+}
+
+@media (min-width: 1024px) {
+    body{
+        padding: 0 20% 0 20%
+    }
+}
+
+
+.hidden{
+    display: none;
+}
+
+.btn{
     font-size: 1.5rem;
+    font-weight: 700;
+    background-color: rgb(116, 215, 118);
+    padding: .25rem 3rem;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    border-radius: 2rem;
 }
 
-.clickable {
-  cursor: pointer;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  text-align: center;
-  font-size: 1.5rem;
-  display: inline-block;
-  transition: background-color 0.3s ease-in;
+.btn:hover{
+    background-color: rgb(40, 221, 43);
 }
 
-.clickable:hover {
-  background-color: rgb(132, 129, 129);
+.btn:active{
+    background-color: rgb(5, 165, 8);
+    transform: translateY(2px);
 }
 
-h1{
-    font-size: 3rem;
+.main-menu-btn{
+    border: none;
+    border-radius: 0; 
 }
 
-.image-class{
-    width: 100px;
-    height: 100px;
-}
+

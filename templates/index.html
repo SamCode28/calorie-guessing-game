@@ -7,24 +7,56 @@
     <title>Calorie Guessing Game</title>
 </head>
 <body>
-    <header>
-        <h1>The Calorie Guessing Game</h1>
+    <div class="background-img"></div>
+    <header class="test">
+        <h1><span class="header-title">Calorie Guessing Game</span></h1>
     </header>
-    <container class="main-menu">
-        <ul class="main-menu-list">
-            <li class="main-menu-list-item"><span id="play-game-1" class="clickable">Guess Calorie Game</span></li>
-            <li class="main-menu-list-item"><span id="play-game-2" class="clickable">Guess Lower Calorie Food Game</span></li>
-            <li class="main-menu-list-item"><span class="clickable">How To Play</span></li>
-            <li class="main-menu-list-item"><span class="clickable">Leaderboard</span></li>
+    <div id="main-menu-container" class="main-menu-container-class">
+        <!--Main Menu List-->
+        <!--Main Menu List-->
+        <ul id="main-menu" class="main-menu-list">
+            <li class="main-menu-list-item"><button type="button" class="btn main-menu-btn" id="play-game-1">Guess Calorie Game</span></li>
+            <li class="main-menu-list-item"><button type="button" class="btn main-menu-btn" id="play-game-2">Guess Lower Calorie Food Game</span></li>
+            <li class="main-menu-list-item"><button type="button" class="btn main-menu-btn">How To Play</span></li>
+            <li class="main-menu-list-item"><button type="button" class="btn main-menu-btn">Leaderboard</span></li>
         </ul>
-    </container>
-    <img class="image-class" id="src-container">
-    <footer>
+    </div>
+
+    <!--Single Food Guess Calorie Game-->
+    <!--Single Food Guess Calorie Game-->
+    <div id="single-food-game-grid-container" class="single-food-game-grid hidden">
+        <!--Answer Buttons-->
+        <div class="button-container">
+            <button class="btn">100</button>
+            <button class="btn">200</button>
+            <button class="btn">300</button>
+            <button class="btn">400</button>
+        </div>
+        <!--Food Card-->
+        <div id="card-1" class="food-card">
+
+            <img id="img-container-1" src="example.svg" class="food-img" alt="...">
+
+            <div class="food-text">
+                <h3><span class="text-background" id="card-1-title">Card Title</span></h5>
+                <p><span class="text-background">Protein: </span><span id="card-1-protein"></span></p>
+                <p><span class="text-background">Carbohydrates: </span><span id="card-1-carb"></span></p>
+                <p><span class="text-background">Fiber: </span><span id="card-1-fiber"></span></p>
+                <p><span class="text-background">Fat: </span><span id="card-1-fat"></span></p>
+                <p><span class="text-background">Calories: </span><span id="card-1-calories"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <!--Double Food Guess Calorie Game-->
+    <!--Double Food Guess Calorie Game-->
+
+    <footer class="test">
         <a href="https://www.fatsecret.com">
             <img src="https://platform.fatsecret.com/api/static/images/powered_by_fatsecret.png" srcset="https://platform.fatsecret.com/api/static/images/powered_by_fatsecret_2x.png 2x, https://platform.fatsecret.com/api/static/images/powered_by_fatsecret_3x.png 3x" border="0"/>
         </a>
     </footer>
-
+    
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 
