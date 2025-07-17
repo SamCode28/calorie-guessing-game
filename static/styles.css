@@ -13,7 +13,7 @@
 }
 
 .header-title{
-    background-color: rgba(200, 255, 200, 0.25);
+    background-color: rgba(200, 255, 200, 0.5);
     font-size: clamp(5vw, 150%, 10vw);
 }
 
@@ -29,7 +29,7 @@ body{
     display: grid;
     align-items: center;
     text-align: center;
-
+    padding: 0 1rem 0 1rem
 }
 
 .main-menu-list{
