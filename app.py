@@ -50,7 +50,10 @@ def get_food():
         'method' : 'foods.search.v3',
         'format' : "json",
         #optional
-        'search_expression' : "apple", #Placeholder
+        'region' : 'US',
+        'page_number' : 0,
+        'max_results' : 5,
+        'search_expression' : f'"{return_random_whole_food()}"', #Placeholder
         'include_food_images' : True,        
     }
 
@@ -83,7 +86,7 @@ def get_food():
             food_data['fiber'] =  f'{serving['fiber']} g'
             food_data['fat'] = f'{serving['fat']} g'
             food_data['calories'] = f'{serving['calories']} kcal'
-            print(f"food:{food_data}")
+            #print(f"food:{food_data}")
             return jsonify(food_data)
     print("No match found")
         #Create error if none found
@@ -94,21 +97,36 @@ def get_food():
     
 
 def return_valid_food_from_list(food_dict):
-    num_reults = len(food_dict)
-    random_key = random.randint(0, num_reults - 1)
+    num_results = len(food_dict)
+    random_key = random.randint(0, num_results - 1)
     test_key = random_key + 1
 
     while(random_key != test_key):
-        if (test_key == num_reults):
+        if (test_key == num_results):
                 test_key = 0
         if('food_images' in food_dict[test_key] and food_dict[test_key]['food_type'] == "Generic"):
+            print(f"Found: {food_dict[test_key]['food_name']}")
             return food_dict[test_key]
+        print(f"Not found: {food_dict[test_key]['food_name']}")
         test_key += 1
     
     return KeyError
-            
 
 
+whole_food_list = ['apple', 'avocados', 'banana', 'blueberry', 'cherry', 'grape', 'grapefruit', 'kiwi', 'lemon', 'lime', 
+ 'mandarin', 'mango', 'melon', 'orange', 'peach', 'pear', 'pineapple', 'pomegranate', 'strawberry', 'watermelon',
+ 'arugula', 'asparagus', 'bell pepper', 'bok choy', 'broccoli', 'brussels sprout', 'cabbage', 'carrot', 
+ 'cauliflower', 'celery', 'corn', 'cucumber', 'eggplant', 'green bean', 'kale', 'leek', 'lettuce', 
+ 'mushroom', 'pea', 'potato', 'radish', 'red onion', 'spinach', 'sweet potato', 'tomato', 'turnip', 'yellow squash', 
+ 'zucchini','almond', 'brazil nut', 'cashew', 'chestnut', 'hazelnut', 'macadamia', 'peanut', 'pecan', 'pine nut', 'pistachio', 'walnut',
+ 'chia seed', 'flaxseed', 'hemp seed', 'pumpkin seed', 'sesame seed', 'sunflower seeds',]
+
+food_num = -1
+
+def return_random_whole_food():
+    global food_num
+    food_num += 1
+    return whole_food_list[food_num]
     
 
 if __name__ == '__main__':
