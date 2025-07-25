@@ -116,20 +116,21 @@ async function set_single_food_game_display_data(){
 }
 
 function randomize_game_one_button_answers(correct_answer){
-  //Set correct answer index
+  //Set correct answer to a random button
   correct_answer_btn = g1_answer_btns[Math.floor(Math.random() * 4)]
   correct_answer_btn.addEventListener('click', game_one_correct_answer)
   correct_answer_btn.textContent = correct_answer
   //Set incorrect answers
+  answer_modifier_nums = [.25, .5, .75, 1.25, 1.5, 1.75, 2]
+  rand_index_of_answer_modifier = Math.floor(Math.random() * 6)
   g1_answer_btns.forEach((buttton) => {
     if(buttton != correct_answer_btn){
       buttton.addEventListener('click', game_one_incorrect_answer)
-      false_answer = Math.floor(correct_answer * (Math.random() + Math.random()));
-      //Ensures false answer is at least 5% different than correct answer
-      while(false_answer > correct_answer && false_answer < correct_answer *1.05 || false_answer < correct_answer  && false_answer > correct_answer * .95 || false_answer == correct_answer){
-        false_answer = Math.floor(correct_answer * (Math.random() + Math.random()));
+      if(rand_index_of_answer_modifier > 6){
+        rand_index_of_answer_modifier = 0
       }
-      buttton.textContent = false_answer
+      buttton.textContent = Math.floor(correct_answer * answer_modifier_nums[rand_index_of_answer_modifier])
+      rand_index_of_answer_modifier += 1
     }
   })
 }
