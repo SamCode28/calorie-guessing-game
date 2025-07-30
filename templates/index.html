@@ -8,10 +8,11 @@
 </head>
 <body>
     <div class="background-img"></div>
-    <header class="test">
-        <h1><span class="header-title">Calorie Guessing Game</span></h1>
-    </header>
-    <div id="main-menu-container" class="main-menu-container-class">
+    <header class="header-container">
+        <!--Main Menu Header-->
+        <h1 id="header-title-id"><span class="header-title" id="header-title">Calorie Guessing Game</span></h1>
+    </header>    
+    <div id="main-menu-container-id" class="main-menu-container-class">
         <!--Main Menu List-->
         <!--Main Menu List-->
         <ul id="main-menu" class="main-menu-list">
@@ -24,26 +25,30 @@
 
     <!--Single Food Guess Calorie Game-->
     <!--Single Food Guess Calorie Game-->
-    <div id="single-food-game-grid-container" class="single-food-game-grid hidden">
+    <div id="g1-game-container-id" class="single-food-game-grid hidden">
+        <!--Single Food Game Question Sentence-->
+        <h2 class="game-one-question-sentence" id="g1-question-sentence-id">How many calories are in 100g of <span id="game-one-question-span"></span>?</h2>
+        <!--Single Food Game Next Button-->
+        <button class="g1-next-btn btn hidden" id="g1-next-btn-id">Next Question</button>
         <!--Answer Buttons-->
         <div class="button-container">
-            <button class="btn">100</button>
-            <button class="btn">200</button>
-            <button class="btn">300</button>
-            <button class="btn">400</button>
+            <button class="btn answer-btn" id="game-1-btn-1"></button>
+            <button class="btn answer-btn" id="game-1-btn-2"></button>
+            <button class="btn answer-btn" id="game-1-btn-3"></button>
+            <button class="btn answer-btn" id="game-1-btn-4"></button>
         </div>
         <!--Food Card-->
         <div id="card-1" class="food-card">
 
-            <img id="img-container-1" src="example.svg" class="food-img" alt="...">
+            <img id="img-container-1" src="" class="food-img" alt="...">
 
             <div class="food-text">
-                <h3><span class="text-background" id="card-1-title">Card Title</span></h5>
-                <p><span class="text-background">Protein: </span><span id="card-1-protein"></span></p>
-                <p><span class="text-background">Carbohydrates: </span><span id="card-1-carb"></span></p>
-                <p><span class="text-background">Fiber: </span><span id="card-1-fiber"></span></p>
-                <p><span class="text-background">Fat: </span><span id="card-1-fat"></span></p>
-                <p><span class="text-background">Calories: </span><span id="card-1-calories"></span></p>
+                <h3><span class="text-background" id="card-1-name"></span></h5>
+                <p><span class="text-background">Protein: <span id="card-1-protein"></span></span></p>
+                <p><span class="text-background">Carbs: <span id="card-1-carb"></span></span></p>
+                <p><span class="text-background">Fiber: <span id="card-1-fiber"></span></span></p>
+                <p><span class="text-background">Fat: <span id="card-1-fat"></span></span></p>
+                <p><span class="text-background">Calories: <span id="card-1-calories"></span></span></p>
             </div>
         </div>
     </div>
@@ -61,4 +66,4 @@
 
 
 </body>
-</html>
+</html>      
