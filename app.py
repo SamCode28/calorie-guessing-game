@@ -1,8 +1,11 @@
+#Libraries
 from flask import Flask, request, jsonify, render_template, Response
 import os
 import requests
 import random
 from requests.auth import HTTPBasicAuth
+#Local
+from foodList import food_id_list
 
 app = Flask(__name__)
 
@@ -10,10 +13,11 @@ app = Flask(__name__)
 client_id = os.getenv('CLIENT_ID')
 client_secret = os.getenv('CLIENT_SECRET')
 
+#API Token
 token_found = None
 
 @app.route("/")
-def index():
+def home_page():
     #Find and store token
     global token_found
     token_url = 'https://oauth.fatsecret.com/connect/token'
@@ -22,29 +26,58 @@ def index():
         'scope' : 'premier'
     }
 
-    response = requests.post(
-        token_url,
-        data=data,
-        auth=HTTPBasicAuth(client_id, client_secret)
-    )
+    response = requests.post(token_url, data=data, auth=HTTPBasicAuth(client_id, client_secret))
 
     if response.status_code == 200:
         token_found = response.json()
-        #Load HTML, CSS, JS
+        #Load HTML
         return render_template("index.html")
-    
     else:
         return f'Error: Failed to get token. Status Code: {response.status_code}' 
-            
     
+@app.get('/get-food-data-with-id')
+def get_food_data_with_id():
+    params = {
+        'food_id' : return_unused_food_id(),
+        'format' : 'json',
+        'include_food_images' : True
+        }
+    header = {'Authorization' : f'Bearer {token_found.get("access_token")}'}
+    response = requests.get(url='https://platform.fatsecret.com/rest/food/v4', headers=header, params=params)
+    response = response.json()
+    response = response['food']
+
+    servings_listed = response['servings']['serving']
+    correct_serving = get_100_g_serving_size(servings_listed)
+
+    #Object to be sent back
+    food_data = {'food_name' : response['food_name'],
+                 'img_url' : response['food_images']['food_image'][0]['image_url'],
+                 'protein' : f'{correct_serving['protein']} g',
+                 'carbs' : f'{correct_serving['carbohydrate']} g',
+                 'fiber' : f'{correct_serving['fiber']} g',
+                 'fat' : f'{correct_serving['fat']} g',
+                 'calories' : f'{correct_serving['calories']} kcal'
+                 }
+
+    return jsonify(food_data)
+
+def get_100_g_serving_size(serving_list):
+    for serving in serving_list:
+        if (serving['serving_description'] == '100 g'):
+            return serving
+
+def return_unused_food_id():
+    id_used = food_id_list.pop(random.randint(0, len(food_id_list) - 1))
+    return id_used
+
+##
+#Needs to be restructed.  This method is now used to find valid foods for storing into food_id_dict
+##
 @app.route('/get-food', methods=['GET'])
 def get_food():
     token_url = 'https://platform.fatsecret.com/rest/foods/search/v3'
-    headers = {
-        #required
-        'Content-Type': 'application/json',
-        'Authorization': f"Bearer {token_found.get("access_token")}"
-    }
+    headers = {'Authorization': f"Bearer {token_found.get("access_token")}"}
     params = {
         #required
         'method' : 'foods.search.v3',
@@ -52,7 +85,7 @@ def get_food():
         #optional
         'region' : 'US',
         'page_number' : 0,
-        'max_results' : 5,
+        'max_results' : 20,
         'search_expression' : f'"{return_random_whole_food()}"', #Placeholder
         'include_food_images' : True,        
     }
@@ -98,31 +131,28 @@ def get_food():
 
 def return_valid_food_from_list(food_dict):
     num_results = len(food_dict)
-    random_key = random.randint(0, num_results - 1)
-    test_key = random_key + 1
+    #random_key = random.randint(0, num_results - 1)
+    test_key = 0
+    answer = None
 
-    while(random_key != test_key):
+    while(test_key != num_results):
         if (test_key == num_results):
                 test_key = 0
+        print(f'\n')
+        print(f"'{food_dict[test_key]['food_name'].lower()}' : {food_dict[test_key]['food_id']},")
         if('food_images' in food_dict[test_key] and food_dict[test_key]['food_type'] == "Generic"):
-            print(f"Found: {food_dict[test_key]['food_name']}")
-            return food_dict[test_key]
-        print(f"Not found: {food_dict[test_key]['food_name']}")
+            #print(f"Found: {food_dict[test_key]['food_name']}")
+            answer = food_dict[test_key]
+        else:
+            print(f"Not found: {food_dict[test_key]['food_name']}")
         test_key += 1
-    
-    return KeyError
-
-
-whole_food_list = ['apple', 'avocados', 'banana', 'blueberry', 'cherry', 'grape', 'grapefruit', 'kiwi', 'lemon', 'lime', 
- 'mandarin', 'mango', 'melon', 'orange', 'peach', 'pear', 'pineapple', 'pomegranate', 'strawberry', 'watermelon',
- 'arugula', 'asparagus', 'bell pepper', 'bok choy', 'broccoli', 'brussels sprout', 'cabbage', 'carrot', 
- 'cauliflower', 'celery', 'corn', 'cucumber', 'eggplant', 'green bean', 'kale', 'leek', 'lettuce', 
- 'mushroom', 'pea', 'potato', 'radish', 'red onion', 'spinach', 'sweet potato', 'tomato', 'turnip', 'yellow squash', 
- 'zucchini','almond', 'brazil nut', 'cashew', 'chestnut', 'hazelnut', 'macadamia', 'peanut', 'pecan', 'pine nut', 'pistachio', 'walnut',
- 'chia seed', 'flaxseed', 'hemp seed', 'pumpkin seed', 'sesame seed', 'sunflower seeds',]
+    print(f'\n')
+    return answer
+    #return KeyError
+#Used to search for new potential foods
+whole_food_list = ["hummus"]
 
 food_num = -1
-
 def return_random_whole_food():
     global food_num
     food_num += 1
