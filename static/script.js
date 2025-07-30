@@ -4,6 +4,9 @@ let correct_answer_btn
 //Main Menu Variables
 //Main Menu Variables
 const main_menu_container = document.getElementById('main-menu-container-id')
+const g2_play_button = document.getElementById('play-game-2')
+
+g2_play_button.addEventListener('click', get_food_data_with_id)
 
 //Single Food Game Variables
 //Single Food Game Variables
@@ -67,32 +70,15 @@ function open_g1(){
 //Game One Functions
 
 //Game_one_correct_answer and game_one_incorrect_answer is redudant
-function game_one_correct_answer(){
+function g1_answer_button_outcomes(){
   g1_answer_btns.forEach((button) => {
     if(button != correct_answer_btn){
       button.classList.add('incorrect-answer-btn')
-      button.removeEventListener('click', game_one_incorrect_answer)
     }
     else{
       button.classList.add('correct-answer-btn')
-      button.removeEventListener('click', game_one_correct_answer)
     }
-    show_answer_data_single_food_game()
-    removeDisplayHidden(g1_next_btn)
-    setDisplayHidden(g1_question_setence)
-  })
-}
-
-function game_one_incorrect_answer(){
-  g1_answer_btns.forEach((button) => {
-    if(button != correct_answer_btn){
-      button.classList.add('incorrect-answer-btn')
-      button.removeEventListener('click', game_one_incorrect_answer)
-    }
-    else{
-      button.classList.add('correct-answer-btn')
-      button.removeEventListener('click', game_one_correct_answer)
-    }
+    button.removeEventListener('click', g1_answer_button_outcomes)
   })
   show_answer_data_single_food_game()
   removeDisplayHidden(g1_next_btn)
@@ -100,7 +86,7 @@ function game_one_incorrect_answer(){
 }
 
 async function set_single_food_game_display_data(){
-  let foodData = await get_food_data();
+  let foodData = await get_food_data_with_id();
   //Pre Guess Data
   g1_question_span.innerText = foodData.food_name
   g1_card_name.innerText = foodData.food_name
@@ -118,14 +104,14 @@ async function set_single_food_game_display_data(){
 function randomize_game_one_button_answers(correct_answer){
   //Set correct answer to a random button
   correct_answer_btn = g1_answer_btns[Math.floor(Math.random() * 4)]
-  correct_answer_btn.addEventListener('click', game_one_correct_answer)
+  correct_answer_btn.addEventListener('click', g1_answer_button_outcomes)
   correct_answer_btn.textContent = correct_answer
   //Set incorrect answers
   answer_modifier_nums = [.25, .5, .75, 1.25, 1.5, 1.75, 2]
   rand_index_of_answer_modifier = Math.floor(Math.random() * 6)
   g1_answer_btns.forEach((buttton) => {
     if(buttton != correct_answer_btn){
-      buttton.addEventListener('click', game_one_incorrect_answer)
+      buttton.addEventListener('click', g1_answer_button_outcomes)
       if(rand_index_of_answer_modifier > 6){
         rand_index_of_answer_modifier = 0
       }
@@ -143,16 +129,26 @@ function show_answer_data_single_food_game(){
   g1_post_guess_data_list.forEach((span) => span.classList.remove('hidden'));
 }
 
-async function get_food_data(){
+async function get_food_data_with_search_term(){
   let response = await fetch('/get-food', {
-  method: 'GET',
-  headers: {"Content-Type" : "application/json"}})
+    method: 'GET',
+    headers: {"Content-Type" : "application/json"}
+  })
   let response_json = await response.json()
   return response_json
 
   //.catch(error => {
   //  console.error('API error:', error);
   //})
+}
+
+async function get_food_data_with_id(){
+  let response = await fetch('/get-food-data-with-id', {
+    method : "Get",
+    headers: {"Content-Type" : "application/json"}
+  })
+  let response_json = await response.json()
+  return response_json
 }
 
 function g1_display_next_question(){
@@ -172,3 +168,4 @@ function g1_display_next_question(){
 }
 
 g1_next_btn.addEventListener('click', g1_display_next_question)
+g2_play_button.addEventListener('click', get_food_data_with_id)
