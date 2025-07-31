@@ -1,5 +1,5 @@
 #Libraries
-from flask import Flask, request, jsonify, render_template, Response
+from flask import Flask, request, jsonify, render_template, Response, session
 import os
 import requests
 import random
@@ -7,13 +7,13 @@ from requests.auth import HTTPBasicAuth
 #Local
 from foodList import food_id_list
 
+#Flask
 app = Flask(__name__)
+app.secret_key = os.getenv('FLASK_SECRET')
 
-#Credentials
+#FatSecret API Credentials
 client_id = os.getenv('CLIENT_ID')
 client_secret = os.getenv('CLIENT_SECRET')
-
-#API Token
 token_found = None
 
 @app.route("/")
@@ -27,6 +27,9 @@ def home_page():
     }
 
     response = requests.post(token_url, data=data, auth=HTTPBasicAuth(client_id, client_secret))
+
+    #Gives each user a copy of food_id_list
+    session['user_food_id_list'] = food_id_list.copy()
 
     if response.status_code == 200:
         token_found = response.json()
@@ -43,6 +46,7 @@ def get_food_data_with_id():
         'include_food_images' : True
         }
     header = {'Authorization' : f'Bearer {token_found.get("access_token")}'}
+
     response = requests.get(url='https://platform.fatsecret.com/rest/food/v4', headers=header, params=params)
     response = response.json()
     response = response['food']
@@ -68,7 +72,9 @@ def get_100_g_serving_size(serving_list):
             return serving
 
 def return_unused_food_id():
-    id_used = food_id_list.pop(random.randint(0, len(food_id_list) - 1))
+    temp_list = session['user_food_id_list']
+    id_used = temp_list.pop(random.randint(0, len(temp_list) - 1))
+    session['user_food_id_list'] =  temp_list
     return id_used
 
 ##
@@ -163,10 +169,6 @@ if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(debug=True, host="0.0.0.0", port=port)
 
-
-#curl -X 'GET' \
-#  'https://api.nal.usda.gov/fdc/v1/food/2262074?format=abridged&nutrients=957&nutrients=203&nutrients=204&nutrients=205' \
-#  -H 'accept: application/json'
 
 #{
 #  "foods_search": {
